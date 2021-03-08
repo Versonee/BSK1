@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 public class ColumnarCipherB implements Cipher{
     private final int n;
     private final int[] key;
@@ -31,16 +29,27 @@ public class ColumnarCipherB implements Cipher{
         data = removeSpaces(data);
         char[] encryptedData = new char[data.length()];
         char[][] matrix = populateMatrixWithData(data, DataType.DATA_DECRYPTED);
-        int index=0;
-        for(int i:key){
-            for(int j=0; j<n;j++){
-                if(matrix[j][i-1] == '\u0000'){}
-                else{
-                    encryptedData[index++] = matrix[j][i-1];
+        int index=0,maxCharToEncrypt=0;
+        boolean split=false;
+        for(int k=1;k<key.length;k++){
+            maxCharToEncrypt+=getIndex(k)+1;
+        }
+        if(maxCharToEncrypt<data.length()) split =true;
+        if(split){
+            String part1 = data.substring(0,data.length()/2);
+            String part2 = data.substring(data.length()/2);
+            return encrypt(part1) + encrypt(part2);
+        }else{
+            for(int i:key){
+                for(int j=0; j<n;j++){
+                    if(matrix[j][i-1] == '\u0000'){}
+                    else{
+                        encryptedData[index++] = matrix[j][i-1];
+                    }
                 }
             }
+            return new String(encryptedData);
         }
-        return new String(encryptedData);
     }
 
     @Override
@@ -48,14 +57,25 @@ public class ColumnarCipherB implements Cipher{
         data = removeSpaces(data);
         char[] decryptedData = new char[data.length()];
         char[][] matrix = populateMatrixWithData(data, DataType.DATA_ENCRYPTED);
-        int index = 0;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                if(matrix[i][j] == '\u0000') break;
-                decryptedData[index++] = matrix[i][j];
-            }
+        int index = 0,maxCharToDecrypt=0;
+        boolean split=false;
+        for(int k=1;k<key.length;k++){
+            maxCharToDecrypt+=getIndex(k)+1;
         }
-        return new String(decryptedData);
+        if(maxCharToDecrypt<data.length()) split =true;
+        if(split){
+            String part1 = data.substring(0,data.length()/2);
+            String part2 = data.substring(data.length()/2);
+            return decrypt(part1) + decrypt(part2);
+        }else{
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    if(matrix[i][j] == '\u0000') break;
+                    decryptedData[index++] = matrix[i][j];
+                }
+            }
+            return new String(decryptedData);
+        }
     }
 
     private char[][] populateMatrixWithData(String data, DataType type){
