@@ -1,4 +1,4 @@
 public interface Cipher {
-    public String encrypt(String data);
-    public String decrypt(String data);
+    String encrypt(String data);
+    String decrypt(String data);
 }
