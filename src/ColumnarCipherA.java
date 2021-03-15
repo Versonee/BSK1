@@ -1,3 +1,4 @@
+import java.util.Optional;
 
 public class ColumnarCipherA implements Cipher{
     private final int n;
@@ -41,9 +42,9 @@ public class ColumnarCipherA implements Cipher{
         int start=0,end=n,index=0;
         while(end<=data.length()){
             char[] line = data.substring(start,end).toCharArray();
-            for(int k=0;k<n;k++){
+            for(int k=1;k<=n;k++){
                 try{
-                    encryptedData[index++] = line[key[k]-1];
+                    encryptedData[index++] = line[getIndex(k,n)];
                 }catch(ArrayIndexOutOfBoundsException e){index--;}
 
             }
@@ -59,16 +60,16 @@ public class ColumnarCipherA implements Cipher{
     public String decrypt(String data){
         data = removeSpaces(data);
         char[] decryptedData = new char[data.length()];
-        int start=0,end=n,index=0;
+        int start=0,end=n, offset=0;
         while(end<=data.length()){
             char[] line = data.substring(start,end).toCharArray();
-            for(int k=0;k<n;k++){
+            for(int k=1;k<=n;k++){
                 try{
-                    decryptedData[index++] = line[getIndex(k+1)];
-                }catch(ArrayIndexOutOfBoundsException e){index--;}
-
+                    decryptedData[getIndex(k,line.length)+offset] = line[k-1];
+                }catch(ArrayIndexOutOfBoundsException e){}
             }
             start+=n;
+            offset+=n;
             if(end==data.length()) break;
             if(end+n>data.length()) end = data.length();
             else end+=n;
@@ -76,13 +77,30 @@ public class ColumnarCipherA implements Cipher{
         return new String(decryptedData);
     }
 
-    private int getIndex(int value) {
+    private int getIndex(int value, int elementsCount) {
+        int[] currentKey = new int[elementsCount];
+        if (elementsCount >= 0) System.arraycopy(key, 0, currentKey, 0, elementsCount);
+        currentKey = formatArray(currentKey);
+        return findElement(currentKey,value);
+    }
+    private int findElement(int[] array, int value){
         int index = 0;
-        for(int i : key){
+        for(int i : array){
             if(i==value) return index;
             index++;
         }
         return -1;
+    }
+
+    private int[] formatArray(int[] currentKey) {
+        int[] formattedArray = new int[currentKey.length];
+        for(int i=0;i<formattedArray.length;i++){
+            int minValue = getMinValue(currentKey);
+            int minIndex = findElement(currentKey, minValue);
+            currentKey[minIndex] = Integer.MAX_VALUE;
+            formattedArray[minIndex] = i+1;
+        }
+        return formattedArray;
     }
 
     private int getMinValue(int[] array) {

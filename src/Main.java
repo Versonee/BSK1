@@ -1,29 +1,36 @@
 public class Main {
     public static void main(String[] args){
 
-        RailFenceCipher rfc = new RailFenceCipher(3);
-        System.out.println(rfc.encrypt("CRYPTOGRAPHY"));
-        System.out.println(rfc.decrypt("CTARPORPYYGH"));
+        //POLITECHNIKA
+        //DZIEKAN
+
+//        RailFenceCipher rfc = new RailFenceCipher(3);
+//        System.out.println(rfc.encrypt("POLITECHNIKA"));
+//        System.out.println(rfc.decrypt("PTNOIEHIALCK"));
 
 //        ColumnarCipherA cc = new ColumnarCipherA(4, "3-1-4-2");
-//        System.out.println(cc.encrypt("CRYPTOGRAPHYOSA"));
-//        System.out.println(cc.decrypt("YCPRGTROHAYPAOS"));
+//        System.out.println(cc.encrypt("POLITECHNIKA"));
+//        System.out.println(cc.decrypt("LPIOCTHEKNAI"));
 
-//        ColumnarCipherA cc = new ColumnarCipherA("CONVENIENCE");
-//        System.out.println(cc.encrypt("HERE IS A SECRET MESSAGE ENCIPHERED BY TRANSPOSITION"));
-//        System.out.println(cc.decrypt("HCARRSSEEEIEEANMGSEETSCYETPDRHBIERISONIOSTAPN"));
 
-//        ColumnarCipherB ccb = new ColumnarCipherB("CONVENIENCE");
-//        System.out.println(ccb.encrypt("here is a secret message enciphered by transposition"));
-//        System.out.println(ccb.decrypt("heespnirrscbtaemgepneiyandiieeroctrtahsossees"));
+//        do poprawki - poprawione
+//        ColumnarCipherA cc = new ColumnarCipherA("DZIEKAN");
+//        System.out.println(cc.encrypt("POLITECHNIKA"));
+//        System.out.println(cc.decrypt("EPILTCOHKIAN"));
+
+
+//        do poprawki - poprawione
+        ColumnarCipherB ccb = new ColumnarCipherB("DZIEKAN");
+        System.out.println(ccb.encrypt("POLITECHNIKA"));
+        System.out.println(ccb.decrypt("EPCHAIKLITON"));
 
 //        CaesarCipher caesarCipher = new CaesarCipher(3);
-//        System.out.println(caesarCipher.encrypt("wiadomosc do zaszyfrowania"));
-//        System.out.println(caesarCipher.decrypt("zldgrprvf gr cdvcbiurzdqld"));
+//        System.out.println(caesarCipher.encrypt("POLITECHNIKA"));
+//        System.out.println(caesarCipher.decrypt("SROLWHFKQLND"));
 
 //        VigenereCipher vc = new VigenereCipher();
-//        System.out.println(vc.encrypt("CRYPTOGRAPHY", "BREAKBREAKBR"));
-//        System.out.println(vc.decrypt("DICPDPXVAZIP", "BREAKBREAKBR"));
+//        System.out.println(vc.encrypt("POLITECHNIKA", "DZIEKAN"));
+//        System.out.println(vc.decrypt("SNTMDEPKMQOK", "DZIEKAN"));
 
     }
 }

@@ -40,11 +40,12 @@ public class ColumnarCipherB implements Cipher{
             String part2 = data.substring(data.length()/2);
             return encrypt(part1) + encrypt(part2);
         }else{
-            for(int i:key){
+            for(int i=0;i<key.length;i++){
+                int columnIndex = getIndex(i+1);
                 for(int j=0; j<n;j++){
-                    if(matrix[j][i-1] == '\u0000'){}
+                    if(matrix[j][columnIndex] == '\u0000'){}
                     else{
-                        encryptedData[index++] = matrix[j][i-1];
+                        encryptedData[index++] = matrix[j][columnIndex];
                     }
                 }
             }
@@ -97,19 +98,32 @@ public class ColumnarCipherB implements Cipher{
         if(type == DataType.DATA_ENCRYPTED){
             int height=0;
             int maxCharToEncrypt=0;
+            int charactersInLastRow=0;
             for(int k=1;k<key.length;k++){
                 height++;
                 maxCharToEncrypt+=getIndex(k)+1;
-                if(maxCharToEncrypt>=data.length()) break;
+                if(maxCharToEncrypt>=data.length()) {
+                    charactersInLastRow = getIndex(k)+1 - (maxCharToEncrypt-data.length());
+                    break;
+                };
             }
-            for(int k:key){
-                for(int i=0;i<height;i++){
+
+            for(int i=0;i<n;i++){
+                if(arrayData.length<index+1) break;
+                int currentColumn = getIndex(i+1);
+                for(int j=0;j<height;j++){
                     if(arrayData.length<index+1) break;
-                    if(getIndex(i+1)>=k-1) {
-                        matrix[i][k-1]=arrayData[index++];
+                    if(getIndex(j+1)>=currentColumn){
+                        if(j+1==height){
+                            if(currentColumn>charactersInLastRow-1)break;
+                            else matrix[j][currentColumn] = arrayData[index++];
+                        }else{
+                            matrix[j][currentColumn] = arrayData[index++];
+                        }
                     }
                 }
             }
+
         }
         return matrix;
     }
